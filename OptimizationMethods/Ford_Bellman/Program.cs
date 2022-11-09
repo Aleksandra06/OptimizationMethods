@@ -10,8 +10,8 @@ namespace Ford_bellman
         static readonly int inf = -1;
         static void Main(string[] args)
         {
-            //(new FordBellmanMatrix()).Run();
-            (new FordBellmanList()).Run();
+            (new FordBellmanMatrix()).Run();
+            //(new FordBellmanList()).Run();
         }
     }
 }

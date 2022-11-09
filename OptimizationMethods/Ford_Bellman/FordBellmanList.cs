@@ -21,24 +21,24 @@ namespace Ford_Bellman
         {
             var path = "input_lab_finding_shortest_distance_Ford-BellmanList.txt";
             var data = File.ReadAllLines(path);
-            var graf = GenerationGraf();
-            //var graf = new List<GrafModel>();
-            //foreach (var row in data)
-            //{
-            //    var tmp = new List<int>();
-            //    var col = row.Split("\t");
-            //    foreach (var item in col)
-            //    {
-            //        tmp.Add(int.Parse(item));
-            //    }
-            //    graf.Add(new GrafModel()
-            //    {
-            //        A = tmp[0],
-            //        B = tmp[1],
-            //        W = tmp[2]
-            //    });
-            //}
-            //LookList(graf);
+            // var graf = GenerationGraf();
+            var graf = new List<GrafModel>();
+            foreach (var row in data)
+            {
+                var tmp = new List<int>();
+                var col = row.Split("\t");
+                foreach (var item in col)
+                {
+                    tmp.Add(int.Parse(item));
+                }
+                graf.Add(new GrafModel()
+                {
+                    A = tmp[0],
+                    B = tmp[1],
+                    W = tmp[2]
+                });
+            }
+            LookList(graf);
             var startNode = 0;
             FordBellman(graf, startNode);
         }
