@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stairs", "Stairs\Stairs.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dijkstra", "Dijkstra\Dijkstra.csproj", "{C03C91F3-6FE1-4D93-B3B7-E546CBE10FB7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kraskall", "Kraskall\Kraskall.csproj", "{98D8D3BC-28B5-42A9-BE0D-1A6DC749E9EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C03C91F3-6FE1-4D93-B3B7-E546CBE10FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C03C91F3-6FE1-4D93-B3B7-E546CBE10FB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C03C91F3-6FE1-4D93-B3B7-E546CBE10FB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98D8D3BC-28B5-42A9-BE0D-1A6DC749E9EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98D8D3BC-28B5-42A9-BE0D-1A6DC749E9EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98D8D3BC-28B5-42A9-BE0D-1A6DC749E9EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98D8D3BC-28B5-42A9-BE0D-1A6DC749E9EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
