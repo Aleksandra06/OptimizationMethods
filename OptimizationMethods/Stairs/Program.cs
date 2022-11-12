@@ -9,7 +9,7 @@ namespace Stairs
     {
         static void Main(string[] args)
         {
-            Knight();
+            King2();
         }
         /// <summary>
         /// Лесенка
@@ -145,63 +145,6 @@ namespace Stairs
                     }
                     if (col - 2 > 0 && row - 1 > 0)
                     {
-                        if (mas[row - 1][col - 2] != 0 )
-                        {
-                            count += mas[row - 1][col - 2];
-                        }
-                    }
-                    else if (row - 1 == 0 && col - 2 == 0)
-                    {
-                        count = 1;
-                    }
-                    mas[row][col] = count;
-                }
-            }
-            var result = mas[rows - 1][cols - 1];
-            Console.WriteLine(result);
-            StreamWriter f = new StreamWriter(pathOut);
-            f.WriteLine(result);
-            f.Close();
-        }
-        /// <summary>
-        /// Стоимость маршрута
-        /// </summary>
-        static void King2()
-        {
-            var pathIn = "king2.in";
-            var pathOut = "king2.out";
-            var data = File.ReadAllLines(pathIn);
-            var tmp = data[0].Split(" ");
-            var rows = int.Parse(tmp[0]);
-            var cols = int.Parse(tmp[1]);
-            List<List<int>> mas = new List<List<int>>();
-            for (int row = 0; row < rows; row++)
-            {
-                mas.Add(new List<int>());
-                mas[row] = new List<int>();
-                for (int col = 0; col < cols; col++)
-                {
-                    mas[row].Add(0);
-                }
-            }
-            for (int row = 1; row < rows; row++)
-            {
-                for (int col = 1; col < cols; col++)
-                {
-                    var count = 0;
-                    if (col - 1 > 0 && row - 2 > 0)
-                    {
-                        if (mas[row - 2][col - 1] != 0)
-                        {
-                            count = mas[row - 2][col - 1];
-                        }
-                    }
-                    else if (row - 2 == 0 && col - 1 == 0)
-                    {
-                        count = 1;
-                    }
-                    if (col - 2 > 0 && row - 1 > 0)
-                    {
                         if (mas[row - 1][col - 2] != 0)
                         {
                             count += mas[row - 1][col - 2];
@@ -214,11 +157,88 @@ namespace Stairs
                     mas[row][col] = count;
                 }
             }
-            var result = mas[rows - 1][cols - 1];
+            //var result = mas[rows - 1][cols - 1];
+            //Console.WriteLine(result);
+            //StreamWriter f = new StreamWriter(pathOut);
+            //f.WriteLine(result);
+            //f.Close();
+        }
+        /// <summary>
+        /// Стоимость маршрута
+        /// </summary>
+        static void King2()
+        {
+            var pathIn = "king2.in";
+            var pathOut = "king2.out";
+            var data = File.ReadAllLines(pathIn);
+            var graf = new List<List<int>>();
+            foreach (var row in data)
+            {
+                Console.WriteLine($"{row}");
+                var tmp = new List<int>();
+                var col = row.Split(" ");
+                foreach (var item in col)
+                {
+                    tmp.Add(int.Parse(item));
+                }
+                graf.Add(tmp);
+            }
+            var n = graf.Count;
+            for (int row = n - 1; row >= 0; row--)
+            {
+                for (int col = 0; col < n; col++)
+                {
+                    if(col == 0 && row == n - 1)
+                    {
+                        continue;
+                    }
+                    var min = int.MaxValue;
+                    if (row < n - 1)
+                    {
+                        min = graf[row + 1][col];
+                    }
+                    if (col > 0)
+                    {
+                        if (min > graf[row][col - 1])
+                        {
+                            min = graf[row][col - 1];
+                        }
+                    }
+                    if (col > 0 && row < n - 1)
+                    {
+                        if (min > graf[row + 1][col - 1])
+                        {
+                            min = graf[row + 1][col - 1];
+                        }
+                    }
+                    graf[row][col] += min;
+                }
+                PrintGraf(graf);
+            }
+            var result = graf[0][n - 1];
             Console.WriteLine(result);
             StreamWriter f = new StreamWriter(pathOut);
             f.WriteLine(result);
             f.Close();
+        }
+        static void PrintGraf(List<List<int>> C)
+        {
+            Console.Write("\n");
+            var n = C.Count;
+            //for (int i = 0; i < n; i++)
+            //{
+            //    Console.Write("\t" + i + 1);
+            //}
+            Console.Write("\n");
+            for (int i = 0; i < n; i++)
+            {
+                //Console.Write("\t" + i + 1);
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write("\t" + C[i][j]);
+                }
+                Console.Write("\n");
+            }
         }
     }
 }

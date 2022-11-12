@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="king2.in">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="knight.in">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

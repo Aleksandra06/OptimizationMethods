@@ -68,6 +68,7 @@ namespace Ford_Bellman
 
             for (int i = 1; i < n; i++)
             {
+                var ism = 0;
                 var dprio = d.ToList();
                 for (int j = 0; j < n; j++)
                 {
@@ -81,9 +82,13 @@ namespace Ford_Bellman
                             puti_(puti, j, k, n);
                         }
                     }
+                    if (d[j] != min)
+                    {
+                        ism++;
+                    }
                     d[j] = min;
                 }
-                Writed(d, n, i);
+                Writed(d, n, i, ism);
                 int flag = 0;
                 for (int j = 0; j < n; j++)
                 {
@@ -108,7 +113,7 @@ namespace Ford_Bellman
                 }
             }
         }
-        void Writed(List<int> d, int n, int row)
+        void Writed(List<int> d, int n, int row, int ism)
         {
             Console.Write($"\nD({row})=(");
             for (int l = 0; l < n; l++)
@@ -118,7 +123,7 @@ namespace Ford_Bellman
                 else
                     Console.Write($"\t{d[l]}");
             }
-            Console.Write(")");
+            Console.Write(") " + ism);
         }
         void WriteD(List<List<int>> D, int n, int row)
         {

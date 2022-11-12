@@ -43,7 +43,7 @@ namespace Dijkstra
             PrintGraf(graf);
             start = 0;
             var table = Dijkstra(graf, n, start);
-            PrintTable(table, n);
+            //PrintTable(table, n);
             //cout << "Востановление пути:" << endl;
             //int* min;
             //for (int i = 0; i < n; i++)
@@ -59,6 +59,19 @@ namespace Dijkstra
             //}
         }
 
+        static void puti_(List<List<int>> puti, int j, int k, int n)
+        {
+            for (int s = 1; s < n; s++)
+            {
+                if (puti[k][s] != (-1))
+                    puti[j][s] = puti[k][s];
+                else
+                {
+                    puti[j][s] = j;
+                    break;
+                }
+            }
+        }
         private static void PrintTable(List<Table> table, int n)
         {
             Console.WriteLine("+-------------------------------------------------------------------------------");
@@ -104,8 +117,30 @@ namespace Dijkstra
                 return n.ToString();
             }
         }
+        static List<List<int>> InitMas(int n, int m)
+        {
+            var mass = new List<List<int>>();
+            for (int i = 0; i < n; i++)
+            {
+                var tmp = new List<int>();
+                for (int j = 0; j < m; j++)
+                {
+                    tmp.Add(0);
+                }
+                mass.Add(tmp);
+            }
+
+            return mass;
+        }
         private static List<Table> Dijkstra(List<List<int>> matrix, int n, int start)
         {
+            var puti = InitMas(n, n);
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                    puti[i][j] = -1;
+                puti[i][0] = start;
+            }
             var table = new List<Table>();
             for (int i = 0; i < n; i++)
             {
@@ -132,6 +167,8 @@ namespace Dijkstra
                 var minVal = table[i - 1].D.Where(x => x > 0).Min();
                 W = table[i - 1].D.FindIndex(x => x == minVal);
                 bul[W] = true;
+                var x = puti[W].FindIndex(x => x == -1);
+                puti[W][x] = W;
                 DW = table[i - 1].D[W];
                 table[i].W = W;
                 table[i].DW = DW;
@@ -142,13 +179,40 @@ namespace Dijkstra
                     if (!bul[j])
                     {
                         if (table[i - 1].D[j] > DW + matrix[W][j])
+                        {
                             table[i].D[j] = DW + matrix[W][j];
-                        else table[i].D[j] = table[i - 1].D[j];
+                            puti_(puti, j, W, n);
+                        }
+                        else
+                        {
+                            table[i].D[j] = table[i - 1].D[j];
+                            //puti_(puti, j, j, n);
+                        }
                     }
                 }
             }
-
+            for (int i = 0; i < puti.Count; i++)
+            {
+                puti[i] = puti[i].Distinct().Where(x => x != -1).ToList();
+            }
+            PrintTable(table, n);
+            WritePuti(puti, n);
+            Console.WriteLine("");
             return table;
+        }
+        static void WritePuti(List<List<int>> puti, int n)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                Console.Write($"\nv {j + 1} - ");
+                foreach (var ver in puti[j])
+                {
+                    if (ver > -1)
+                    {
+                        Console.Write($"{ver + 1} ");
+                    }
+                }
+            }
         }
 
         static List<int> InitIntList(int count)
