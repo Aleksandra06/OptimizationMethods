@@ -9,7 +9,7 @@ namespace Stairs
     {
         static void Main(string[] args)
         {
-            King2();
+            Lepus();
         }
         /// <summary>
         /// Лесенка
