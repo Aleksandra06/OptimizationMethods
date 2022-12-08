@@ -17,11 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frog", "Frog\Frog.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backpack_limited", "Backpack_limited\Backpack_limited.csproj", "{B39F5650-2EAF-4A23-8A08-6A1E70F40AE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backpack_unlimited", "Backpack_unlimited\Backpack_unlimited.csproj", "{4F6720D5-A2F9-479B-8A74-1FEFF6114754}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backpack_unlimited", "Backpack_unlimited\Backpack_unlimited.csproj", "{4F6720D5-A2F9-479B-8A74-1FEFF6114754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gradient", "Gradient\Gradient.csproj", "{A0A02B35-37D9-483C-B2FB-FD13C96CBBDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gradient", "Gradient\Gradient.csproj", "{A0A02B35-37D9-483C-B2FB-FD13C96CBBDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Golden_ratio", "Golden_ratio\Golden_ratio.csproj", "{A237C44B-68EE-429E-8734-08A6FB8AE337}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Golden_ratio", "Golden_ratio\Golden_ratio.csproj", "{A237C44B-68EE-429E-8734-08A6FB8AE337}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaximumFlow", "MaximumFlow\MaximumFlow.csproj", "{2DB2F29C-A23A-422D-8015-2F790003166A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFS", "BFS\BFS.csproj", "{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +157,30 @@ Global
 		{A237C44B-68EE-429E-8734-08A6FB8AE337}.Release|x64.Build.0 = Release|Any CPU
 		{A237C44B-68EE-429E-8734-08A6FB8AE337}.Release|x86.ActiveCfg = Release|Any CPU
 		{A237C44B-68EE-429E-8734-08A6FB8AE337}.Release|x86.Build.0 = Release|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Debug|x64.Build.0 = Debug|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Debug|x86.Build.0 = Debug|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Release|x64.ActiveCfg = Release|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Release|x64.Build.0 = Release|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Release|x86.ActiveCfg = Release|Any CPU
+		{2DB2F29C-A23A-422D-8015-2F790003166A}.Release|x86.Build.0 = Release|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Debug|x86.Build.0 = Debug|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x64.Build.0 = Release|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
