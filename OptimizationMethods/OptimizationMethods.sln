@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gradient", "Gradient\Gradie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Golden_ratio", "Golden_ratio\Golden_ratio.csproj", "{A237C44B-68EE-429E-8734-08A6FB8AE337}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaximumFlow", "MaximumFlow\MaximumFlow.csproj", "{2DB2F29C-A23A-422D-8015-2F790003166A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaximumFlow", "MaximumFlow\MaximumFlow.csproj", "{2DB2F29C-A23A-422D-8015-2F790003166A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BFS", "BFS\BFS.csproj", "{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BFS", "BFS\BFS.csproj", "{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransportTask", "TransportTask\TransportTask.csproj", "{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,6 +183,18 @@ Global
 		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x64.Build.0 = Release|Any CPU
 		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x86.ActiveCfg = Release|Any CPU
 		{0E02CB46-7B76-4FEE-8DC5-5C6263B21493}.Release|x86.Build.0 = Release|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Debug|x64.Build.0 = Debug|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Debug|x86.Build.0 = Debug|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Release|x64.ActiveCfg = Release|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Release|x64.Build.0 = Release|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Release|x86.ActiveCfg = Release|Any CPU
+		{F071127C-F0B3-4E3F-8B6F-5CCA4920565C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
