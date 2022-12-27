@@ -88,19 +88,27 @@ namespace TransportTask
 
         private static void Run(List<int> C, List<int> M, List<GrafModel> graf)
         {
-            Ravn(C, M, graf);
+            graf = Ravn(C, M, graf);
             CalcGrafOne(graf, C.ToList(), M.ToList());
             var Fx = new List<int>();
             var shag = 1;
             while (true)
             {
-                if (shag == 5)
+                if (shag == 4)
                 {
 
                 }
                 Console.WriteLine($"\nШаг {shag}:\n");
-                var zanyat = graf.Where(x => x.Number > 0).Count();
+                var zanyat = graf.Where(x => x.Number >= 0).Count();
                 Console.WriteLine($"Занятых клеток: {zanyat}; n + m - 1 = {C.Count + M.Count - 1}\n");
+                while (C.Count + M.Count - 1 > zanyat)
+                {
+                    PrintGraf(C, M, null, null, graf);
+                    FixGraf(graf, M.Count, C.Count);
+                    zanyat = graf.Where(x => x.Number >= 0).Count();
+                    Console.WriteLine($"Занятых клеток: {zanyat}; n + m - 1 = {C.Count + M.Count - 1}\n");
+                    PrintGraf(C, M, null, null, graf);
+                }
                 var fx = CalcFx(graf);
                 Fx.Add(fx);
                 Console.WriteLine($"F(x) = {fx}\n");
@@ -123,6 +131,41 @@ namespace TransportTask
             }
         }
 
+        private static void FixGraf(List<GrafModel> graf, int mCount, int cCount)
+        {
+            for (int i = 0; i < cCount; i++)
+            {
+                var rows = graf.Where(x => x.C == i).ToList();
+                var index = rows.FindIndex(x => x.Number == -1);
+                if (index >= 0)
+                {
+                    var gIndex = graf.FindIndex(x => x.C == rows[index].C && x.M == rows[index].M);
+                    graf[gIndex].Number = 0;
+                    return;
+                }
+            }
+            //for (var m = 0; m < mCount; m++)
+            //{
+            //    var rows = graf.Where(x => x.M == m).ToList();
+            //    if (rows.Count(x => x.Number >= 0) < 2)
+            //    {
+            //        var index = graf.FindIndex(x => x.M == m && x.Number < 0);
+            //        graf[index].Number = 0;
+            //        return;
+            //    }
+            //}
+            //for (var c = 0; c < cCount; c++)
+            //{
+            //    var rows = graf.Where(x => x.M == c).ToList();
+            //    if (rows.Count(x => x.Number >= 0) < 2)
+            //    {
+            //        var index = graf.FindIndex(x => x.C == c && x.Number < 0);
+            //        graf[index].Number = 0;
+            //        return;
+            //    }
+            //}
+        }
+
         private static int CalcFx(List<GrafModel> graf)
         {
             var sum = 0;
@@ -141,6 +184,12 @@ namespace TransportTask
             var put = FindPut(graf, indexMax, indexMax, null, true).Distinct().ToList();
             var minNumber = FindMinNumber(graf, put);
             Console.WriteLine($"min = {minNumber}, C = {graf[indexMax].C + 1}, M = {graf[indexMax].M + 1}\n");
+            Console.Write($"Путь:");
+            foreach (var p in put)
+            {
+                Console.Write($"{graf[p].C + 1}.{graf[p].M + 1},");
+            }
+            Console.Write($"\n");
             var minus = -1;
             for (int i = 0; i < put.Count - 1; i++)
             {
@@ -265,7 +314,7 @@ namespace TransportTask
             {
                 var id = q.Dequeue();
                 var g = graf[id];
-                if (g.Number <= 0)
+                if (g.Number < 0)
                 {
                     continue;
                 }
@@ -410,7 +459,7 @@ namespace TransportTask
             return table;
         }
 
-        private static void Ravn(List<int> c, List<int> m, List<GrafModel> graf)
+        private static List<GrafModel> Ravn(List<int> c, List<int> m, List<GrafModel> graf)
         {
             if (c.Sum() > m.Sum())
             {
@@ -428,6 +477,8 @@ namespace TransportTask
                     graf.Add(new GrafModel() { C = c.Count() - 1, M = i, W = 0, Number = -1 });
                 }
             }
+            graf = graf.OrderBy(x => x.M).OrderBy(x => x.C).ToList();
+            return graf;
         }
 
         static List<int> InitIntList(int count)
@@ -465,3 +516,16 @@ namespace TransportTask
         }
     }
 }
+
+//1
+//3	5	4	6	50
+//2   4   1   5   75
+//8   3   2   4   100
+//2   5   6   1   120
+//40  80  110 70
+//2
+//2   4   6   3   1   7
+//3   5   2   7   3   8
+//2   1   3   1   5   15
+//6   5   7   4   5
+//3
