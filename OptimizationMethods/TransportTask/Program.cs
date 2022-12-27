@@ -19,42 +19,70 @@ namespace TransportTask
         }
         static void Main(string[] args)
         {
-            var data = File.ReadAllLines("graf.txt");
+            var data = File.ReadAllLines("task.txt");
             var graf = new List<GrafModel>();
-            foreach (var row in data)
-            {
-                var tmp = new List<int>();
-                var col = row.Split("\t");
-                foreach (var item in col)
-                {
-                    tmp.Add(int.Parse(item));
-                }
-                graf.Add(new GrafModel()
-                {
-                    C = tmp[0],
-                    M = tmp[1],
-                    W = tmp[2],
-                    //CW = -1,
-                    //MW = -1,
-                    Number = -1
-                });
-            }
-            data = File.ReadAllLines("magazin.txt");
-            var M = new List<int>();
-            foreach (var row in data)
-            {
-                M.Add(int.Parse(row));
-                var index = graf.FindIndex(x => x.M == M.Count - 1);
-                //graf[index].MW = M.Last();
-            }
-            data = File.ReadAllLines("sklad.txt");
             var C = new List<int>();
-            foreach (var row in data)
+            var M = new List<int>();
+            for (int r = 0; r < data.Length - 1; r++)
             {
-                C.Add(int.Parse(row));
-                var index = graf.FindIndex(x => x.C == C.Count - 1);
-                //graf[index].CW = C.Last();
+                var col = data[r].Split("\t");
+                for (int c = 0; c < col.Length - 1; c++)
+                {
+                    string? item = col[c];
+                    graf.Add(new GrafModel()
+                    {
+                        C = r,
+                        M = c,
+                        W = int.Parse(item),
+                        Number = -1
+                    });
+                }
+                var intem = col[col.Length - 1];
+                C.Add(int.Parse(intem));
             }
+            var colM = data[data.Length - 1].Split("\t");
+            for (int c = 0; c < colM.Length; c++)
+            {
+                string? item = colM[c];
+                M.Add(int.Parse(item));
+            }
+            PrintGraf(C, M, null, null, graf);
+            //var data = File.ReadAllLines("graf.txt");
+            //var graf = new List<GrafModel>();
+            //foreach (var row in data)
+            //{
+            //    var tmp = new List<int>();
+            //    var col = row.Split("\t");
+            //    foreach (var item in col)
+            //    {
+            //        tmp.Add(int.Parse(item));
+            //    }
+            //    graf.Add(new GrafModel()
+            //    {
+            //        C = tmp[0],
+            //        M = tmp[1],
+            //        W = tmp[2],
+            //        //CW = -1,
+            //        //MW = -1,
+            //        Number = -1
+            //    });
+            //}
+            //data = File.ReadAllLines("magazin.txt");
+            //var M = new List<int>();
+            //foreach (var row in data)
+            //{
+            //    M.Add(int.Parse(row));
+            //    var index = graf.FindIndex(x => x.M == M.Count - 1);
+            //    //graf[index].MW = M.Last();
+            //}
+            //data = File.ReadAllLines("sklad.txt");
+            //var C = new List<int>();
+            //foreach (var row in data)
+            //{
+            //    C.Add(int.Parse(row));
+            //    var index = graf.FindIndex(x => x.C == C.Count - 1);
+            //    //graf[index].CW = C.Last();
+            //}
             Run(C, M, graf);
         }
 
@@ -290,12 +318,18 @@ namespace TransportTask
                         Console.Write($"{g[index].W}\t");
                     }
                 }
-                Console.Write(u[i] + "\t");
+                if (u != null)
+                {
+                    Console.Write(u[i] + "\t");
+                }
             }
             Console.Write("\n\nV\t");
-            for (int j = 0; j < v.Count; j++)
+            if (v != null)
             {
-                Console.Write(Print(v[j]) + "\t");
+                for (int j = 0; j < v.Count; j++)
+                {
+                    Console.Write(Print(v[j]) + "\t");
+                }
             }
             Console.WriteLine("\n");
         }
