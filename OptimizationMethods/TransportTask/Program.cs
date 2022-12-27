@@ -1,4 +1,8 @@
-﻿namespace TransportTask
+﻿using System.Collections.Generic;
+using System.Globalization;
+using static System.Reflection.Metadata.BlobBuilder;
+
+namespace TransportTask
 {
     internal class Program
     {
@@ -58,12 +62,20 @@
         {
             Ravn(C, M, graf);
             CalcGrafOne(graf, C.ToList(), M.ToList());
+            var Fx = new List<int>();
             var shag = 1;
             while (true)
             {
+                if (shag == 5)
+                {
+
+                }
                 Console.WriteLine($"\nШаг {shag}:\n");
                 var zanyat = graf.Where(x => x.Number > 0).Count();
                 Console.WriteLine($"Занятых клеток: {zanyat}; n + m - 1 = {C.Count + M.Count - 1}\n");
+                var fx = CalcFx(graf);
+                Fx.Add(fx);
+                Console.WriteLine($"F(x) = {fx}\n");
                 List<int> U = InitIntList(C.Count());
                 List<int> V = InitIntList(M.Count());
                 CalcUV(graf, U, V);
@@ -71,13 +83,128 @@
                 var indexMax = FingIndexMax(graf, U, V);
                 if (indexMax == -1)
                 {
+                    Console.WriteLine($"Опорный план является оптимальным, так все оценки свободных клеток удовлетворяют условию ui + vj <= cij.\n");
                     break;
                 }
+                ChangeGrafByIndex(graf, indexMax);
+                //PrintGraf(C, M, U, V, graf);
                 //var table = CreateTable(C, M);
                 //PrintTable(table, C, M);
+
+                shag++;
             }
         }
 
+        private static int CalcFx(List<GrafModel> graf)
+        {
+            var sum = 0;
+            foreach (var g in graf)
+            {
+                if (g.Number > 0)
+                {
+                    sum += g.Number * g.W;
+                }
+            }
+            return sum;
+        }
+
+        private static void ChangeGrafByIndex(List<GrafModel> graf, int indexMax)
+        {
+            var put = FindPut(graf, indexMax, indexMax, null, true).Distinct().ToList();
+            var minNumber = FindMinNumber(graf, put);
+            Console.WriteLine($"min = {minNumber}, C = {graf[indexMax].C + 1}, M = {graf[indexMax].M + 1}\n");
+            var minus = -1;
+            for (int i = 0; i < put.Count - 1; i++)
+            {
+                int p = put[i];
+                graf[p].Number = graf[p].Number + minus * minNumber;
+                minus = minus * -1;
+                if (graf[p].Number == 0)
+                {
+                    graf[p].Number = -1;
+                }
+            }
+            graf[indexMax].Number = minNumber;
+        }
+
+        private static int FindMinNumber(List<GrafModel> graf, List<int> put)
+        {
+            var minus = 1;
+            var min = graf[put[0]].Number;
+            for (int i = 1; i < put.Count - 1; i++)
+            {
+                if (min > graf[put[i]].Number && minus < 0)
+                {
+                    min = graf[put[i]].Number;
+                }
+                minus = minus * -1;
+            }
+            return min;
+        }
+
+        private static List<int> FindPut(List<GrafModel> graf, int startId, int endId, bool? isDown, bool isStart = false)
+        {
+            if (endId == startId && !isStart)
+            {
+                return new List<int>() { endId };
+            }
+            var nextIdList = FindNextId(graf, startId, isDown, endId);
+            foreach (var id in nextIdList)
+            {
+                isDown = isStart ? graf[startId].M == graf[id].M : isDown.Value;
+                var put = FindPut(graf, id, endId, !isDown);
+                if (put == null)
+                {
+                    continue;
+                }
+                put.Insert(0, id);
+                return put;
+            }
+            return null;
+        }
+
+        private static List<int> FindNextId(List<GrafModel> graf, int indexMax, bool? isDown, int endId)
+        {
+            if (isDown == true || isDown == null)
+            {
+                var list = graf.Where(x => x.M == graf[indexMax].M && x.C != graf[indexMax].C).ToList();
+                if (list.Any(x => x.M == graf[endId].M && x.C == graf[endId].C))
+                {
+                    return new List<int>() { endId };
+                }
+                else
+                {
+                    list = list.Where(x => x.Number >= 0).ToList();
+                }
+                var nIndex = new List<int>();
+                foreach (var l in list)
+                {
+                    var n = graf.FindIndex(x => x.C == l.C && x.M == l.M);
+                    nIndex.Add(n);
+                }
+                return nIndex;
+            }
+            if (isDown == false || isDown == null)
+            {
+                var list = graf.Where(x => x.C == graf[indexMax].C && x.M != graf[indexMax].M).ToList();
+                if (list.Any(x => x.M == graf[endId].M && x.C == graf[endId].C))
+                {
+                    return new List<int>() { endId };
+                }
+                else
+                {
+                    list = list.Where(x => x.Number >= 0).ToList();
+                }
+                var nIndex = new List<int>();
+                foreach (var l in list)
+                {
+                    var n = graf.FindIndex(x => x.C == l.C && x.M == l.M);
+                    nIndex.Add(n);
+                }
+                return nIndex;
+            }
+            return new List<int>();
+        }
         private static int FingIndexMax(List<GrafModel> graf, List<int> u, List<int> v)//u->c, v-> m
         {
             var index = -1;
@@ -85,7 +212,7 @@
             for (var i = 0; i < graf.Count(); i++)
             {
                 var g = graf[i];
-                if (g.Number > 0)
+                if (g.Number < 0)
                 {
                     var tmp = u[g.C] + v[g.M] - g.W;
                     if (tmp > 0 && max < tmp)
@@ -114,10 +241,10 @@
                 {
                     continue;
                 }
-                if (g.M == 0)
+                if (g.C == 0)
                 {
-                    V[g.M] = 0;
-                    U[g.C] = g.W;
+                    V[g.M] = g.W;
+                    U[g.C] = 0;
                 }
                 else
                 {
@@ -156,16 +283,16 @@
                     var index = g.FindIndex(x => x.M == j);
                     if (index >= 0 && g[index].Number >= 0)
                     {
-                        Console.Write($"{g[index].Number}({g[index].W})\t");
+                        Console.Write($"{g[index].W}({g[index].Number})\t");
                     }
                     else
                     {
-                        Console.Write("-\t");
+                        Console.Write($"{g[index].W}\t");
                     }
                 }
                 Console.Write(u[i] + "\t");
             }
-            Console.Write("\nV\t");
+            Console.Write("\n\nV\t");
             for (int j = 0; j < v.Count; j++)
             {
                 Console.Write(Print(v[j]) + "\t");
