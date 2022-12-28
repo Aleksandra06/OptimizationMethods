@@ -114,7 +114,14 @@ namespace TransportTask
                 Console.WriteLine($"F(x) = {fx}\n");
                 List<int> U = InitIntList(C.Count());
                 List<int> V = InitIntList(M.Count());
-                CalcUV(graf, U, V);
+                var vurozden = !CalcUV(graf, U, V);
+                while (vurozden)
+                {
+                    Console.WriteLine($"Невозможно расчитать все U, V!\n");
+                    //PrintGraf(C, M, U, V, graf);
+                    FixVurozdenGraf(graf, U, V);
+                    vurozden = !CalcUV(graf, U, V);
+                }
                 PrintGraf(C, M, U, V, graf);
                 var indexMax = FingIndexMax(graf, U, V);
                 if (indexMax == -1)
@@ -131,7 +138,55 @@ namespace TransportTask
             }
         }
 
-        private static void FixGraf(List<GrafModel> graf, int mCount, int cCount)
+        private static void FixVurozdenGraf(List<GrafModel> graf, List<int> U, List<int> V)//u->c, v-> m
+        {
+            var listId = new List<int>();
+            for (int i = 0; i < U.Count; i++)
+            {
+                int u = U[i];
+                if (u == int.MinValue)
+                {
+                    var list = graf.Where(x => x.C == i && x.Number == -1).ToList();
+                    foreach (var item in list)
+                    {
+                        var id = graf.FindIndex(x => x.C == item.C && x.M == item.M);
+                        listId.Add(id);
+                    }
+                }
+            }
+            for (int i = 0; i < V.Count; i++)
+            {
+                int v = V[i];
+                if (v == int.MinValue)
+                {
+                    var list = graf.Where(x => x.M == i && x.Number == -1).ToList();
+                    foreach (var item in list)
+                    {
+                        var id = graf.FindIndex(x => x.C == item.C && x.M == item.M);
+                        listId.Add(id);
+                    }
+                }
+            }
+            var min = int.MaxValue;
+            var idMin = -1;
+            foreach (var id in listId)
+            {
+                if (graf[id].W < min)
+                {
+                    min = graf[id].W;
+                    idMin = id;
+                }
+            }
+
+            var idZero = graf.FindIndex(x => x.Number == 0);
+            if (idZero >= 0)
+            {
+                graf[idZero].Number = -1;
+                graf[idMin].Number = 0;
+            }
+        }
+
+        private static void FixGraf(List<GrafModel> graf, int M, int cCount)
         {
             for (int i = 0; i < cCount; i++)
             {
@@ -144,26 +199,6 @@ namespace TransportTask
                     return;
                 }
             }
-            //for (var m = 0; m < mCount; m++)
-            //{
-            //    var rows = graf.Where(x => x.M == m).ToList();
-            //    if (rows.Count(x => x.Number >= 0) < 2)
-            //    {
-            //        var index = graf.FindIndex(x => x.M == m && x.Number < 0);
-            //        graf[index].Number = 0;
-            //        return;
-            //    }
-            //}
-            //for (var c = 0; c < cCount; c++)
-            //{
-            //    var rows = graf.Where(x => x.M == c).ToList();
-            //    if (rows.Count(x => x.Number >= 0) < 2)
-            //    {
-            //        var index = graf.FindIndex(x => x.C == c && x.Number < 0);
-            //        graf[index].Number = 0;
-            //        return;
-            //    }
-            //}
         }
 
         private static int CalcFx(List<GrafModel> graf)
@@ -303,13 +338,15 @@ namespace TransportTask
             return index;
         }
 
-        private static void CalcUV(List<GrafModel> graf, List<int> U, List<int> V)//u->c, v-> m
+        private static bool CalcUV(List<GrafModel> graf, List<int> U, List<int> V)//u->c, v-> m
         {
             Queue<int> q = new Queue<int>();
             for (int i = 0; i < graf.Count; i++)
             {
                 q.Enqueue(i);
             }
+            var oneId = -1;
+            var count = 0;
             while (q.Count > 0)
             {
                 var id = q.Dequeue();
@@ -322,23 +359,42 @@ namespace TransportTask
                 {
                     V[g.M] = g.W;
                     U[g.C] = 0;
+                    oneId = -1;
                 }
                 else
                 {
                     if (V[g.M] == int.MinValue && U[g.C] == int.MinValue)
                     {
                         q.Enqueue(id);
+                        if (q.Count == 1)
+                        {
+                            if (q.Peek() == oneId)
+                            {
+                                count++;
+                                if (count > 3)
+                                {
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                oneId = q.Peek();
+                            }
+                        }
                     }
                     else if (V[g.M] == int.MinValue)
                     {
                         V[g.M] = g.W - U[g.C];
+                        oneId = -1;
                     }
                     else if (U[g.C] == int.MinValue)
                     {
                         U[g.C] = g.W - V[g.M];
+                        oneId = -1;
                     }
                 }
             }
+            return true;
         }
 
         private static void PrintGraf(List<int> c, List<int> m, List<int> u, List<int> v, List<GrafModel> graf)//u->c, v-> m
@@ -394,6 +450,7 @@ namespace TransportTask
 
         private static void CalcGrafOne(List<GrafModel> graf, List<int> C, List<int> M)
         {
+            // var mark = InitMas(C.Count, M.Count);// 0 - ничего, 1 - марк, 2 - готово
             foreach (var g in graf)
             {
                 if (C[g.C] != 0 && M[g.M] != 0)
@@ -403,13 +460,22 @@ namespace TransportTask
                         g.Number = M[g.M];
                         C[g.C] = C[g.C] - M[g.M];
                         M[g.M] = 0;
+                        //mark[g.C][g.M] = 2;
                     }
                     else
                     {
                         g.Number = C[g.C];
                         M[g.M] = M[g.M] - C[g.C];
                         C[g.C] = 0;
+                        //mark[g.C][g.M] = 2;
                     }
+                    //if (M[g.M] == 0 && g.M - 1 > 1 && mark[g.C][g.M - 1] == 2)
+                    //{
+                    //    for (int i = 0; i < mark[g.C].Count; i++)
+                    //    {
+                    //        int m = mark[g.C][i];
+                    //    }
+                    //}
                 }
             }
         }
@@ -529,3 +595,18 @@ namespace TransportTask
 //2   1   3   1   5   15
 //6   5   7   4   5
 //3
+//4   5   8   1   15
+//2   6   5   4   10
+//1   3   2   5   1
+//1   3   3   1   5
+//7   8   3   5
+//4
+//4   5   2   3   8
+//2   5   2   4   5
+//3   1   7   3   6
+//7   1   6   4
+//5
+//4   4   5   2   7
+//5   6   1   4   6
+//1   1   3   5   5
+//4   8   1   5
