@@ -129,6 +129,7 @@ namespace TransportTask
                     Console.WriteLine($"Опорный план является оптимальным, так все оценки свободных клеток удовлетворяют условию ui + vj <= cij.\n");
                     break;
                 }
+               // Console.WriteLine($"ui + vj - cij = {U[graf[indexMax].C] + V[graf[indexMax].M] - graf[indexMax].Number}\n");
                 ChangeGrafByIndex(graf, indexMax);
                 //PrintGraf(C, M, U, V, graf);
                 //var table = CreateTable(C, M);
@@ -584,7 +585,7 @@ namespace TransportTask
 }
 
 //1
-//3	5	4	6	50
+//3   5   4   6   50
 //2   4   1   5   75
 //8   3   2   4   100
 //2   5   6   1   120
@@ -610,3 +611,21 @@ namespace TransportTask
 //5   6   1   4   6
 //1   1   3   5   5
 //4   8   1   5
+//5
+//4   4   5   10
+//5   6   1   10
+//1   1   3   10
+//10  10  10
+//6
+//3   20  8   13  4   100 80
+//4   4   18  14  3   0   60
+//10  4   18  8   6   0   30
+//7   19  17  10  1   100 60
+//10  30  40  50  70  30
+//7
+//4   4   5   7   6   10
+//5   6   1   6   5   10
+//1   1   3   4   3   10
+//4   3   7   5   1   10
+//5   6   9   4   2   10
+//10  10  10  10  10
